@@ -14,4 +14,4 @@ spec:
     spec:
       containers:
         - name: first-node
-          image: archinwater/testrepo:0.2
+          image: archinwater/testrepo:0.3
