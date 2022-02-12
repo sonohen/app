@@ -4,7 +4,7 @@ var server = http.createServer();
 
 server.on("request", function (req, res) {
   res.writeHead(200, { "Content-Type": "text/plain" });
-  res.write("これはテストざます");
+  res.write("Hi there this is a test");
   res.end();
 });
 

@@ -21,7 +21,7 @@ pipeline {
         stage('Build Docker image') {
             steps {
                 dir("/var/jenkins_home/workspace/Pipeline") {
-                    sh 'docker image build --tag archinwater/testrepo:0.1 .'
+                    sh 'docker image build --tag archinwater/testrepo:0.2 .'
                 }
             }
         }
@@ -33,7 +33,7 @@ pipeline {
                     usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
                         sh 'docker login -u $USERNAME -p $PASSWORD'
                     }
-                sh "docker push archinwater/testrepo:0.1"
+                sh "docker push archinwater/testrepo:0.2"
             }
         }
         stage('K8sクラスタへのデプロイ') {
