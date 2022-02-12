@@ -1,4 +1,8 @@
 pipeline {
+    environment {
+    	KUBECONFIG = credentials('kubectl')
+    }
+    
     agent any
 
     stages {
@@ -9,14 +13,14 @@ pipeline {
         }
         stage('Run unit tests') {
             steps {
-                dir("/var/jenkins_home/workspace/First Pipeline") {
+                dir("/var/jenkins_home/workspace/Pipeline") {
                     sh 'nodeunit test'
                 }
             }
         }
         stage('Build Docker image') {
             steps {
-                dir("/var/jenkins_home/workspace/First Pipeline") {
+                dir("/var/jenkins_home/workspace/Pipeline") {
                     sh 'docker image build --tag archinwater/testrepo:0.1 .'
                 }
             }
@@ -32,5 +36,13 @@ pipeline {
                 sh "docker push archinwater/testrepo:0.1"
             }
         }
+        stage('K8sクラスタへのデプロイ') {
+            steps {
+               sh "kubectl cluster-info --kubeconfig $KUBECONFIG"
+    		   sh "kubectl apply -f deploy_myweb.yaml --kubeconfig $KUBECONFIG"
+    	    }
+	    }
     }
 }
+
+microk8s kubectl expose deployment first-app-development --type=NodePort --port=3000 --name=first-app-development
